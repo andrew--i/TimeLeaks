@@ -1,0 +1,6 @@
+{
+  "name": "Solit Birthdays Telegram Bot",
+  "description": "Telegram Bot",
+  "image": "heroku/java",
+  "addons": []
+}
