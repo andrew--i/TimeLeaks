@@ -1,4 +1,4 @@
-package org.ai;
+package org.ai.handler;
 
 
 import spark.Request;

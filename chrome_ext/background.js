@@ -35,7 +35,7 @@ function flushQueue() {
 
     tabsInfo.splice(0, tabsInfo.length);
 
-	postResult(hostDuration);
+	postResult({timestamp: new Date(Date.now()).toISOString(), duration: hostDuration});
 }
 
 function getHost(url) {
