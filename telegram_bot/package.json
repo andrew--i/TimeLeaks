@@ -10,13 +10,11 @@
     "node": "6.11.1"
   },
   "dependencies": {
-    "express": "4.15.2"
-  },
-  "author": "a--i",
-  "license": "ISC",
-  "devDependencies": {
+    "express": "4.15.2",
     "body-parser": "^1.17.2",
     "morgan": "^1.8.2",
     "node-telegram-bot-api": "^0.28.0"
-  }
+  },
+  "author": "a--i",
+  "license": "ISC"
 }
