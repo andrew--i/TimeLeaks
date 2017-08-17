@@ -4,17 +4,16 @@ const bot = new TelegramBot(token, {polling: true});
 
 
 function isValidMessage(message) {
-    String userName = System.getenv(process.env.TELEGRAM_USERNAME;
-    return !message.from.username.equalsIgnoreCase(userName);
+    var userName = process.env.TELEGRAM_USERNAME;
+    return message.from.username === userName;
 }
 
 
-
-module.exports = function(repository) {
-    bot.on('message', (msg) => {
+module.exports = function (repository) {
+    bot.on('message', function (msg) {
         const chatId = msg.chat.id;
-        if(isValidMessage(msg)) {
-            bot.sendMessage(chatId, repository.all());
+        if (isValidMessage(msg)) {
+            bot.sendMessage(chatId, JSON.stringify(repository.all()));
         }
     });
 

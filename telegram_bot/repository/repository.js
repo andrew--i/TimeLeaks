@@ -11,4 +11,4 @@ function save(item) {
 module.exports = {
     all:all,
     save:save
-}
+};
