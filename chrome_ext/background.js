@@ -1,16 +1,18 @@
 var tabsQueue = [];
 var hostDuration = {};
+var MAX_QUEUE_SIZE = 10;
 
 function postResult(data) {
 	var xhr = new XMLHttpRequest();	
-    xhr.open("POST", "https://time-leaks-telegram-bot.herokuapp.com/timeleaks", true);
+    // xhr.open("POST", "https://time-leaks-telegram-bot.herokuapp.com/timeleaks", true);
+    xhr.open("POST", "http://localhost:5000/timeleaks", true);
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     xhr.send(JSON.stringify(data));
 }
 
 
 function processQueue() {
-	if(tabsQueue.length < 3) 
+	if(tabsQueue.length < MAX_QUEUE_SIZE) 
 		return;
     flushQueue();
 }
