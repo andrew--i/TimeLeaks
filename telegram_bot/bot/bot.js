@@ -13,7 +13,9 @@ module.exports = function (repository) {
     bot.on('message', function (msg) {
         const chatId = msg.chat.id;
         if (isValidMessage(msg)) {
-            bot.sendMessage(chatId, JSON.stringify(repository.all()));
+            repository.all().then(function(result){
+                bot.sendMessage(chatId, JSON.stringify(result));
+            });
         }
     });
 

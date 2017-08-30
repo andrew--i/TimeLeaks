@@ -1,11 +1,84 @@
-var timeleaks = [];
+const Dropbox = require('dropbox');
+const DROPBOX_TOKEN = process.env.DROPBOX_TOKEN;
+
+const dbx = new Dropbox({ accessToken: DROPBOX_TOKEN });
+const _ = require('lodash');
+const Q = require('q');
 
 function all () {
-    return timeleaks;
+    let d = Q.defer();
+    dbx.filesListFolder({path: ''})
+      .then(function(response) {
+        let entries = response.entries;
+
+        let files = _.map(_.filter(entries, function(item) { return item['.tag'] === 'file'}), function(f){return f.path_lower;});
+        let folders = _.map(_.filter(entries, function(item) { return item['.tag'] === 'folder'}), function(f){return f.path_lower;});
+
+        getFiles(folders).then(function(otherFiles){
+            downloadFiles(_.concat(files, otherFiles)).then(function(result){
+                d.resolve(result);
+            });
+
+        });
+      }).catch(function(error) {
+        console.log(error);
+        d.reject();
+      });
+    return d.promise;
 }
 
 function save(item) {
-    timeleaks.push(item);
+    dbx.filesUpload({ contents: item, path: '/' + new Date().toISOString().split('T')[0]})
+    .then(function(response) {
+        console.log(response);
+    }).catch(function(error) {
+      console.log(error);
+    });
+}
+
+function getFolderFiles(folder) {
+    var d = Q.defer();
+
+    dbx.filesListFolder({path: folder})
+        .then(function(response) {
+            let files = _.map(_.filter(response.entries, function(item){return item['.tag'] === 'file'}), function(f){return f.path_lower});
+            console
+            d.resolve(files);
+        }).catch(function(error) {
+              console.log(error);
+            });
+
+    return d.promise;
+}
+
+function getFiles(folders) {
+    var d = Q.defer();
+    var promises = _.map(folders, function(folder){return getFolderFiles(folder)});
+
+    Q.all(promises).then(function(result){
+        d.resolve(_.flatMap(result, function(f){return f}));
+    });
+    return d.promise;
+}
+
+function downloadFiles(files) {
+    var d = Q.defer();
+    Q.all(_.map(files, function(f){return downloadFile(f);}))
+    .then(function(result) {
+        d.resolve(result);
+    })
+    return d.promise;
+}
+
+
+function downloadFile(file) {
+    var d = Q.defer();
+    dbx.filesDownload({path:file}).then(function(response){
+        d.resolve(response.fileBinary)
+    }).catch(function(error) {
+        console.log(error);
+      });
+    return d.promise;
 }
 
 module.exports = {
