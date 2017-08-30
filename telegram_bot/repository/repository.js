@@ -91,8 +91,6 @@ function downloadFile(file) {
     return d.promise;
 }
 
-save({message: 'hello world'})
-
 module.exports = {
     all:all,
     save:save
