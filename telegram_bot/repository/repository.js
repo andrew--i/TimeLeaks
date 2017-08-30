@@ -27,6 +27,16 @@ function all () {
     return d.promise;
 }
 
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
 function save(item) {
     dbx.filesUpload({ contents: JSON.stringify(item), path: '/' + new Date().toISOString().split('T')[0] + '/'+guid()+'.json'})
     .then(function(response) {
@@ -81,15 +91,7 @@ function downloadFile(file) {
     return d.promise;
 }
 
-function guid() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
-}
+save({message: 'hello world'})
 
 module.exports = {
     all:all,
