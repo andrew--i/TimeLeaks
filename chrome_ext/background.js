@@ -3,9 +3,8 @@ var hostDuration = {};
 var MAX_QUEUE_SIZE = 10;
 
 function postResult(data) {
-	var xhr = new XMLHttpRequest();	
-    // xhr.open("POST", "https://time-leaks-telegram-bot.herokuapp.com/timeleaks", true);
-    xhr.open("POST", "http://localhost:5000/timeleaks", true);
+    var xhr = new XMLHttpRequest();	
+    xhr.open("POST", "https://time-leaks-telegram-bot.herokuapp.com/timeleaks", true);
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     xhr.send(JSON.stringify(data));
 }
